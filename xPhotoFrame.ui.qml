@@ -4,17 +4,27 @@ Rectangle {
 
     width: 640
     height: 960
-    color: "#000000"
+    color: "#f2f2f2"
 
     MouseArea {
         id: mouseArea
         y: 0
         enabled: true
 
+        Rectangle {
+            id: imageBg
+            x: 0
+            y: 62
+            width: 640
+            height: 640
+            color: "#ffffff"
+            border.width: 0
+        }
+
         Image {
             id: mainImage
             x: 0
-            y: 0
+            y: 62
             width: 640
             height: 640
             fillMode: Image.PreserveAspectFit
@@ -24,16 +34,16 @@ Rectangle {
         Rectangle {
             id: rectangle1
             x: 0
-            y: 640
+            y: 700
             width: 640
-            height: 147
+            height: 21
             color: "#ffffff"
         }
 
         Row {
             id: commentRow
             x: 8
-            y: 644
+            y: 704
             width: 624
             height: 134
             antialiasing: false
@@ -73,15 +83,15 @@ Rectangle {
         Rectangle {
             id: rectangle
             x: 0
-            y: 777
+            y: 853
             width: 640
-            height: 201
+            height: 125
             color: "#383839"
 
             Text {
                 id: sign
-                x: 241
-                y: 161
+                x: 232
+                y: 10
                 width: 186
                 height: 40
                 color: "#ffffff"
@@ -96,12 +106,51 @@ Rectangle {
         Text {
             id: commentValue
             x: 8
-            y: 667
+            y: 727
             width: 624
-            height: 104
+            height: 120
             text: commentText
+            font.family: "Tahoma"
             wrapMode: Text.WordWrap
             font.pixelSize: 18
+        }
+    }
+
+    Row {
+        id: row
+        x: 10
+        width: 630
+        height: 62
+        transformOrigin: Item.Center
+        spacing: 6
+
+        Image {
+            id: userLogo
+            y: 5
+            width: 50
+            height: 50
+            source: userLogoImg
+
+            Image {
+                id: userMask
+                x: 0
+                y: 0
+                width: 50
+                height: 50
+                clip: true
+                source: "userMask.png"
+            }
+        }
+
+        Text {
+            id: userName
+            y: 20
+            width: 200
+            text: userNameText
+            verticalAlignment: Text.AlignVCenter
+            font.weight: Font.Light
+            font.family: "Courier"
+            font.pixelSize: 19
         }
     }
 }

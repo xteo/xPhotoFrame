@@ -4,6 +4,7 @@ import ssl
 from PyQt5.QtGui import QImage, QPainter, QPalette, QPixmap, QColor
 
 from instagramClient import instagramClient
+from facebookClient import facebookClient
 
 class Post(object):
     """ the post the photo frame inspect"""
@@ -34,8 +35,11 @@ class Post(object):
         ctx.check_hostname = False
         ctx.verify_mode = ssl.CERT_NONE
 
-#        url_data = urllib.request.urlopen(urlPath , context=ctx).read()
-        url_data = urllib.request.urlopen(urlPath).read()
+        try:
+            url_data = urllib.request.urlopen(urlPath, context=ctx).read()
+        except TypeError:
+            url_data = urllib.request.urlopen(urlPath).read()
+
 
         pixmap = QPixmap()
         pixmap.loadFromData(url_data)
@@ -98,7 +102,7 @@ class instagramPost(Post):
         return self.__media.created_time.strftime("%A %d. %B %Y")
 
     def getUserName(self):
-        return self.__media.user.username
+        return self.__media['from']['name']
 
     def getUserImageUrl(self):
         user = self.__instagramClient.api.user(user_id=self.__media.user.id)
@@ -106,6 +110,67 @@ class instagramPost(Post):
 
     def getImageUserHandle(self, index):
         return "image://%s/%d" % ("instagramUser", index)
+
+
+
+class facebookPost(Post):
+    """ From Instagram """
+
+    def __init__(self, facebookMedia):
+        """ """
+        self.__media = facebookMedia
+        ## setup Instragram Support
+        self.__facebookClient = facebookClient()
+
+        #print(self.__media.keys())
+
+        #for aKey in self.__media.keys():
+        #    print(aKey, self.__media[aKey])
+
+
+    def getLikesCount(self):
+        if "likes" in self.__media:
+            return len(self.__media["likes"]['data'])
+        else:
+            return 0
+
+    def getCaption(self):
+        return self._boldHashtag(self.__media['message'])
+
+    def getUrl(self):
+        #print(self.__media.keys())
+        photoId = self.__media['object_id']
+        profile = self.__facebookClient.graph.get_object(photoId)
+        #print(profile.keys())
+        #for aKey in profile.keys():
+        #    print(profile[aKey])
+        #print(profile['format'])
+        return profile['source']
+
+        #return self.__media['picture']
+
+    def getImageHandle(self, index):
+        return "image://%s/%d" % ("facebook", index)
+
+    def getLocation(self):
+        if "place" in self.__media:
+            return str(self.__media['place']['name'])
+        else:
+            print (self.__media.keys())
+            return ""
+
+    def getDate(self):
+        return self.__media["created_time"] #.strftime("%A %d. %B %Y")
+
+    def getUserName(self):
+        return self.__media['from']['name']
+
+    def getUserImageUrl(self):
+        #user = self.__instagramClient.api.user(user_id=self.__media.user.id)
+        return ""
+
+    def getImageUserHandle(self, index):
+        return "image://%s/%d" % ("facebookUser", index)
 
 
 

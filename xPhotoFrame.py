@@ -1,4 +1,4 @@
-import sys
+import sys, os
 
 from PyQt5.QtCore import QUrl, QTimer
 
@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QApplication
 
 from instagramClient import instagramClient
 
-#from facebookClient import facebookClient
+from facebookClient import facebookClient
 
 import photoProvider
 
@@ -38,16 +38,28 @@ class xPhotoFame(QQuickView):
         self.__instagramUserProvider = photoProvider.instagramUserProvider()
         self.__engine.addImageProvider(self.__instagramUserProvider.urlHandle(), self.__instagramUserProvider)
 
-        """
+        #FaceBook Stuff
         self.__facebookClient = facebookClient()
+
+        self.__facebookProvider = photoProvider.facebookProvider()
+        self.__engine.addImageProvider(self.__facebookProvider.urlHandle(), self.__facebookProvider)
+
+        self.__facebookUserProvider = photoProvider.facebookUserProvider()
+
+        self.setSource(QUrl('./xPhotoFrame.qml'))
+
+    def setupAsFacebookFeed(self, mode="me"):
+        self.__posts = []
         profile = self.__facebookClient.graph.get_object("me")
         posts = self.__facebookClient.graph.get_connections(profile['id'], 'posts')
         for aPost in posts['data']:
-            print(aPost.keys())
-            if 'picture' in aPost:
-                print(aPost['likes'])
-        """
-        self.setSource(QUrl('./xPhotoFrame.ui.qml'))
+            if aPost['type'] == "photo":
+                self.__posts.append(post.facebookPost(aPost))
+
+        self.__facebookProvider.setPosts(self.__posts)
+        self.__facebookUserProvider.setPosts(self.__posts)
+
+        self.__currentPhotoProvider = self.__facebookProvider
 
     def setupAsInstagramFeed(self, mode="xteo"):
         self.__posts = []
@@ -99,16 +111,23 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     photoFrame = xPhotoFame()
-    photoFrame.setupAsInstagramFeed("xteo")
-    photoFrame.rootObject().setTransformOrigin(QQuickItem.Center)
-    photoFrame.rootObject().setRotation(-90)
-    photoFrame.rootObject().setScale(.8)
-    photoFrame.rootObject().setY(-240)
-    photoFrame.rootObject().setX(65)
-    photoFrame.setResizeMode(QQuickView.SizeViewToRootObject)
-#    photoFrame.resize(800,480)
+
+    #photoFrame.connect( app.quit)
+    #photoFrame.rootObject().quit.connect(app.quit)
+
+    #photoFrame.setupAsInstagramFeed("xteo")
+    photoFrame.setupAsFacebookFeed("me")
+
+    if os.getenv("USER") == "pi":
+        photoFrame.rootObject().setTransformOrigin(QQuickItem.TopLeft)
+        photoFrame.rootObject().setRotation(-90)
+        photoFrame.rootObject().setY(480)
+
+        photoFrame.rootObject().setScale(480.0/640.0)
+        photoFrame.setResizeMode(QQuickView.SizeRootObjectToView)
+        photoFrame.resize(800,480)
+
     photoFrame.show()
-    photoFrame.showFullScreen()
 
     photoFrame.startSlideShow()
 

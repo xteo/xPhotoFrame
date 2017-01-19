@@ -1,15 +1,23 @@
 import QtQuick 2.6
 
 Rectangle {
+    id: rootFrame
 
     width: 640
     height: 960
     color: "#f2f2f2"
+    scale: 1
+    transformOrigin: Item.Center
+    rotation: 0
 
     MouseArea {
         id: mouseArea
-        y: 0
+        anchors.fill: parent
         enabled: true
+
+        onClicked: {
+            Qt.quit();
+        }
 
         Rectangle {
             id: imageBg

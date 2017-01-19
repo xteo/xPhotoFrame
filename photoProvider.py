@@ -35,14 +35,36 @@ class instagramUserProvider(photoProvider):
     def __init__(self, posts=[]):
         photoProvider.__init__(self,posts)
 
-    def requestPixmap(self, id, size):
-
-        post = self._posts[(int(id))]
-        pixmap = post.getUserPixmap()
-
-        return pixmap , QSize(100, 100)
+    # def requestPixmap(self, id, size):
+    #
+    #     post = self._posts[(int(id))]
+    #     pixmap = post.getUserPixmap()
+    #
+    #     return pixmap , QSize(100, 100)
 
     def urlHandle(self):
         return "instagramUser"
 
 
+
+class facebookProvider(photoProvider):
+    def __init__(self, posts=[]):
+        photoProvider.__init__(self,posts)
+
+    def urlHandle(self):
+        return "facebook"
+
+
+class facebookUserProvider(photoProvider):
+    def __init__(self, posts=[]):
+        photoProvider.__init__(self,posts)
+
+    # def requestPixmap(self, id, size):
+    #
+    #     post = self._posts[(int(id))]
+    #     pixmap = post.getUserPixmap()
+    #
+    #     return pixmap , QSize(100, 100)
+
+    def urlHandle(self):
+        return "facebookUser"

@@ -3,8 +3,8 @@ import QtQuick 2.6
 Rectangle {
     id: rootFrame
 
-    width: 640
-    height: 960
+    width: 768
+    height: 1024
     color: "#f2f2f2"
     scale: 1
     transformOrigin: Item.Center
@@ -22,143 +22,61 @@ Rectangle {
         Rectangle {
             id: imageBg
             x: 0
-            y: 62
-            width: 640
-            height: 640
-            color: "#ffffff"
+            y: 0
+            width: 768
+            height: 1024
+            color: "#000000"
             border.width: 0
         }
 
         Image {
             id: mainImage
             x: 0
-            y: 62
-            width: 640
-            height: 640
-            fillMode: Image.PreserveAspectFit
+            y: 50
+            width: 768
+            height: 813
+            fillMode: Image.PreserveAspectCrop
             source: imageUrl
         }
 
-        Rectangle {
-            id: rectangle1
-            x: 0
-            y: 700
-            width: 640
-            height: 21
+        Text {
+            id: dateValue
+            x: 483
+            y: 8
+            width: 277
+            height: 36
             color: "#ffffff"
+            text: dateText
+            horizontalAlignment: Text.AlignRight
+            font.pixelSize: 30
         }
 
-        Row {
-            id: commentRow
+        Text {
+            id: locationValue1
             x: 8
-            y: 704
-            width: 624
-            height: 134
-            antialiasing: false
-            spacing: 4
-
-            Text {
-                id: likesValue
-                text: likesText
-                font.pixelSize: 12
-            }
-
-            Text {
-                id: likes
-                text: qsTr("Likes")
-                font.pixelSize: 12
-            }
-
-            Text {
-                id: dateValue
-                width: 200
-                text: dateText
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 12
-            }
-
-            Text {
-                id: locationValue
-                x: 80
-                width: 200
-                text: locationText
-                leftPadding: 0
-                horizontalAlignment: Text.AlignRight
-                font.pixelSize: 12
-            }
-        }
-
-        Rectangle {
-            id: rectangle
-            x: 0
-            y: 853
-            width: 640
-            height: 125
-            color: "#383839"
-
-            Text {
-                id: sign
-                x: 232
-                y: 10
-                width: 186
-                height: 40
-                color: "#ffffff"
-                text: qsTr("Photo Frame by xTeo")
-                font.capitalization: Font.AllUppercase
-                font.family: "Times New Roman"
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 19
-            }
+            y: 8
+            width: 474
+            height: 36
+            color: "#ffffff"
+            text: locationText
+            horizontalAlignment: Text.AlignLeft
+            leftPadding: 0
+            font.pixelSize: 30
         }
 
         Text {
             id: commentValue
             x: 8
-            y: 727
-            width: 624
-            height: 120
+            y: 869
+            width: 752
+            height: 232
+            color: "#ffffff"
             text: commentText
             font.family: "Tahoma"
             wrapMode: Text.WordWrap
-            font.pixelSize: 18
-        }
-    }
-
-    Row {
-        id: row
-        x: 10
-        width: 630
-        height: 62
-        transformOrigin: Item.Center
-        spacing: 6
-
-        Image {
-            id: userLogo
-            y: 5
-            width: 50
-            height: 50
-            source: userLogoImg
-
-            Image {
-                id: userMask
-                x: 0
-                y: 0
-                width: 50
-                height: 50
-                clip: true
-                source: "userMask.png"
-            }
+            font.pixelSize: 25
         }
 
-        Text {
-            id: userName
-            y: 20
-            width: 200
-            text: userNameText
-            verticalAlignment: Text.AlignVCenter
-            font.weight: Font.Light
-            font.family: "Courier"
-            font.pixelSize: 19
-        }
+
     }
 }

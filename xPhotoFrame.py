@@ -89,9 +89,9 @@ class xPhotoFame(QQuickView):
         self.__context.setContextProperty("commentText", post.getCaption())
         self.__context.setContextProperty("locationText", post.getLocation())
         self.__context.setContextProperty("dateText", post.getDate())
-        self.__context.setContextProperty("userNameText", post.getUserName())
-
-        self.__context.setContextProperty("userLogoImg", post.getImageUserHandle(index))
+        # self.__context.setContextProperty("userNameText", post.getUserName())
+        #
+        # self.__context.setContextProperty("userLogoImg", post.getImageUserHandle(index))
 
 
     def __showNextPost(self):
@@ -100,7 +100,7 @@ class xPhotoFame(QQuickView):
             newIndex = 0
 
         self.__setPostIndex(newIndex)
-        QTimer.singleShot(1000, self.__showNextPost)
+        QTimer.singleShot(5000, self.__showNextPost)
 
     def startSlideShow(self):
         self.__currentPostIndex = -1
@@ -115,17 +115,17 @@ if __name__ == '__main__':
     #photoFrame.connect( app.quit)
     #photoFrame.rootObject().quit.connect(app.quit)
 
-    #photoFrame.setupAsInstagramFeed("xteo")
+#    photoFrame.setupAsInstagramFeed("xteo")
     photoFrame.setupAsFacebookFeed("me")
 
-    if os.getenv("USER") == "pi":
-        photoFrame.rootObject().setTransformOrigin(QQuickItem.TopLeft)
-        photoFrame.rootObject().setRotation(-90)
-        photoFrame.rootObject().setY(480)
-
-        photoFrame.rootObject().setScale(480.0/640.0)
-        photoFrame.setResizeMode(QQuickView.SizeRootObjectToView)
-        photoFrame.resize(800,480)
+    # if os.getenv("USER") == "pi":
+    #     photoFrame.rootObject().setTransformOrigin(QQuickItem.TopLeft)
+    #     photoFrame.rootObject().setRotation(-90)
+    #     photoFrame.rootObject().setY(480)
+    #
+    #     photoFrame.rootObject().setScale(480.0/768)
+    #     photoFrame.setResizeMode(QQuickView.SizeRootObjectToView)
+    #     photoFrame.resize(800,480)
 
     photoFrame.show()
 

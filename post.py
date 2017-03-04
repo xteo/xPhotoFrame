@@ -5,6 +5,8 @@ from PyQt5.QtGui import QImage, QPainter, QPalette, QPixmap, QColor
 
 from instagramClient import instagramClient
 from facebookClient import facebookClient
+from datetime import datetime
+import dateutil.parser as dateparser
 
 class Post(object):
     """ the post the photo frame inspect"""
@@ -17,7 +19,7 @@ class Post(object):
         newParts = []
         for aPart in parts:
             if aPart.startswith("#"):
-                hashtag = "<font color='MidnightBlue' size='4'>%s</font>" % aPart
+                hashtag = "<font color='LightSkyBlue' size='4'>%s</font>" % aPart
                 newParts.append(hashtag)
             else:
                 newParts.append(aPart)
@@ -102,7 +104,7 @@ class instagramPost(Post):
         return self.__media.created_time.strftime("%A %d. %B %Y")
 
     def getUserName(self):
-        return self.__media['from']['name']
+        return self.__media.user.username
 
     def getUserImageUrl(self):
         user = self.__instagramClient.api.user(user_id=self.__media.user.id)
@@ -122,10 +124,12 @@ class facebookPost(Post):
         ## setup Instragram Support
         self.__facebookClient = facebookClient()
 
-        #print(self.__media.keys())
+        debug = False
+        if debug:
+            print(self.__media.keys())
 
-        #for aKey in self.__media.keys():
-        #    print(aKey, self.__media[aKey])
+            for aKey in self.__media.keys():
+                print(aKey, self.__media[aKey])
 
 
     def getLikesCount(self):
@@ -141,11 +145,11 @@ class facebookPost(Post):
         #print(self.__media.keys())
         photoId = self.__media['object_id']
         profile = self.__facebookClient.graph.get_object(photoId)
+
         #print(profile.keys())
         #for aKey in profile.keys():
-        #    print(profile[aKey])
-        #print(profile['format'])
-        return profile['source']
+        #    print(aKey, profile[aKey])
+        return profile['images'][0]['source']
 
         #return self.__media['picture']
 
@@ -160,7 +164,8 @@ class facebookPost(Post):
             return ""
 
     def getDate(self):
-        return self.__media["created_time"] #.strftime("%A %d. %B %Y")
+        datetime_object = dateparser.parse(self.__media["created_time"])
+        return datetime_object.strftime("%a %d. %b %Y")
 
     def getUserName(self):
         return self.__media['from']['name']
